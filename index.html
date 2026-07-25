@@ -1019,12 +1019,11 @@
             font-size: 11px;
         }
 
-        /* Увеличенные отступы между полями в доставке */
-        .cart-modal__form .delivery-field {
-            margin-bottom: 8px;
-        }
-        .cart-modal__form .delivery-field:last-of-type {
+        /* Одинаковые отступы для всех полей в форме заказа */
+        #deliveryFields input,
+        #deliveryFields textarea {
             margin-bottom: 0;
+            width: 100%;
         }
 
         .cafe-info {
@@ -1581,11 +1580,11 @@
                     <input type="tel" id="orderPhone" placeholder="Номер телефона" required>
 
                     <div id="deliveryFields">
-                        <input type="text" id="orderStreet" placeholder="Улица, дом" class="delivery-field">
-                        <input type="text" id="orderApartment" placeholder="Кв./Офис" class="delivery-field">
-                        <input type="text" id="orderFloor" placeholder="Этаж" class="delivery-field">
-                        <input type="text" id="orderEntrance" placeholder="Подъезд" class="delivery-field">
-                        <textarea id="orderComment" placeholder="Комментарий к адресу" rows="2" class="delivery-field"></textarea>
+                        <input type="text" id="orderStreet" placeholder="Улица, дом">
+                        <input type="text" id="orderApartment" placeholder="Кв./Офис">
+                        <input type="text" id="orderFloor" placeholder="Этаж">
+                        <input type="text" id="orderEntrance" placeholder="Подъезд">
+                        <textarea id="orderComment" placeholder="Комментарий к адресу" rows="2"></textarea>
                     </div>
 
                     <!-- ===== С СОБОЙ (С КАРТОЙ) ===== -->
