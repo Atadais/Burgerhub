@@ -955,7 +955,7 @@
         }
         .pickup-map iframe {
             width: 100%;
-            height: 110px;
+            height: 150px;
             display: block;
             border: none;
         }
@@ -1273,7 +1273,7 @@
             .cart-modal__form textarea { min-height: 26px; font-size: 10px; }
             .cafe-info { padding: 4px 8px; margin-bottom: 4px; }
             .cafe-info__row { font-size: 9px; }
-            .pickup-map iframe { height: 90px; }
+            .pickup-map iframe { height: 200px; }
             .cart-modal__submit { padding: 8px; font-size: 12px; }
             .product__name { font-size: 11px; min-height: 24px; }
             .product__price { font-size: 13px; }
@@ -1492,30 +1492,27 @@
                     </div>
 
                     <!-- ===== С СОБОЙ (С КАРТОЙ) ===== -->
-<div id="pickupFields" class="hidden">
-    <div class="cafe-info" style="margin-top:0;">
-        <div class="cafe-info__row">
-            <strong>Адрес самовывоза:</strong>
-            <span>ТЦ Сити парк, Осетинская ул., 126</span>
-        </div>
-        <div class="cafe-info__row">
-            <strong>Время работы:</strong>
-            <span>10:00 — 21:30</span>
-        </div>
-    </div>
+                    <div id="pickupFields" class="hidden">
+                        <div class="cafe-info" style="margin-top:0;">
+                            <div class="cafe-info__row">
+                                <strong>Адрес самовывоза:</strong>
+                                <span>ТЦ Сити парк, Осетинская ул., 126</span>
+                            </div>
+                            <div class="cafe-info__row">
+                                <strong>Время работы:</strong>
+                                <span>10:00 — 21:30</span>
+                            </div>
+                        </div>
 
-    <!-- КАРТА С НОВЫМ АДРЕСОМ -->
-    <div class="pickup-map">
-        <iframe 
-            src="https://yandex.ru/map-widget/v1/?ll=43.620079,43.488876&z=17&pt=43.620079,43.488876~red" 
-            allowfullscreen="true" 
-            loading="lazy">
-        </iframe>
-    </div>
-    <div class="pickup-map__label">ТЦ Сити парк, Осетинская ул., 126, Нальчик</div>
+                        <div class="pickup-map">
+                            <iframe src="https://yandex.ru/map-widget/v1/?ll=43.620079,43.488876&z=17&pt=43.620079,43.488876~red" allowfullscreen="true" loading="lazy">
+                            </iframe>
+                        </div>
+                        <div class="pickup-map__label">ТЦ Сити парк, Осетинская ул., 126, Нальчик</div>
 
-    <textarea id="orderPickupComment" placeholder="Комментарий к заказу" rows="2"></textarea>
-</div>
+                        <textarea id="orderPickupComment" placeholder="Комментарий к заказу" rows="2"></textarea>
+                    </div>
+
                     <button type="submit" class="cart-modal__submit" id="orderSubmit">Оформить заказ</button>
                     <div class="cart-modal__status" id="orderStatus"></div>
                 </form>
@@ -1632,8 +1629,8 @@
             ],
             snacks: [
                 { id: 'n1', name: 'Острые крылышки 5 шт', price: 349, ingredients: 'Куриные крылышки в остром соусе', image: 'https://images.unsplash.com/photo-1562967916-eb82221d1d2f?w=400&h=400&fit=crop' },
-                { id: 'n2', name: 'Стрипсы 3 шт', price: 199, price2: 279, ingredients: 'Куриные стрипсы в хрустящей панировке', image: 'https://images.unsplash.com/photo-1562967916-eb82221d1d2f?w=400&h=400&fit=crop' },
-                { id: 'n3', name: 'Наггетсы 6 шт', price: 189, price2: 229, ingredients: 'Куриные наггетсы в хрустящей панировке', image: 'https://images.unsplash.com/photo-1562967916-eb82221d1d2f?w=400&h=400&fit=crop' },
+                { id: 'n2', name: 'Стрипсы 3/5 шт', price: 199, price2: 279, ingredients: 'Куриные стрипсы в хрустящей панировке', image: 'https://images.unsplash.com/photo-1562967916-eb82221d1d2f?w=400&h=400&fit=crop' },
+                { id: 'n3', name: 'Наггетсы 6/9 шт', price: 189, price2: 229, ingredients: 'Куриные наггетсы в хрустящей панировке', image: 'https://images.unsplash.com/photo-1562967916-eb82221d1d2f?w=400&h=400&fit=crop' },
                 { id: 'n4', name: 'Сырные шарики 8 шт', price: 249, ingredients: 'Сырные шарики в панировке', image: 'https://images.unsplash.com/photo-1562967916-eb82221d1d2f?w=400&h=400&fit=crop' },
                 { id: 'n5', name: 'Картошка по-деревенски', price: 199, ingredients: 'Картофель с кожурой, соль, специи', image: 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=400&h=400&fit=crop' },
                 { id: 'n6', name: 'Картофель фри', price: 189, ingredients: 'Картофель, соль, специи', image: 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=400&h=400&fit=crop' }
@@ -1756,9 +1753,8 @@
                 if (item.name.includes('Гиро')) return size === 'large' ? 'Большой' : 'Средний';
                 return size === 'large' ? 'Большая' : 'Средняя';
             }
-            if (item.id === 'n2' || item.id === 'n3') {
-                return size === 'large' ? '5 шт / 9 шт' : '3 шт / 6 шт';
-            }
+            if (item.id === 'n2') return size === 'large' ? '5 шт' : '3 шт';
+            if (item.id === 'n3') return size === 'large' ? '9 шт' : '6 шт';
             return size === 'large' ? 'Большой' : 'Маленький';
         }
 
@@ -2311,7 +2307,7 @@
         }
 
         console.log('BURGERHUB загружен');
-        console.log('Пароль для входа в админку: Amur_amur1@');
+        console.log('Пароль для входа в админку: Burger_hub1@');
     </script>
 </body>
 </html>
