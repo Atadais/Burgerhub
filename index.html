@@ -990,7 +990,7 @@
         .cart-modal__form {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 10px;
         }
 
         .cart-modal__form input,
@@ -1019,7 +1019,7 @@
             font-size: 11px;
         }
 
-        /* Одинаковые отступы для всех полей в форме заказа */
+        /* Убираем лишние отступы у полей в доставке, так как gap уже даёт отступы */
         #deliveryFields input,
         #deliveryFields textarea {
             margin-bottom: 0;
@@ -1363,7 +1363,7 @@
             .cart-modal__title { font-size: 15px; }
             .cart-modal__total { font-size: 15px; margin-bottom: 6px; }
             .order-type__btn { padding: 5px 0; font-size: 11px; }
-            .cart-modal__form { gap: 4px; }
+            .cart-modal__form { gap: 8px; }
             .cart-modal__form input,
             .cart-modal__form textarea { padding: 6px 10px; font-size: 11px; }
             .cart-modal__form textarea { min-height: 26px; font-size: 10px; }
