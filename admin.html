@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>BURGERHUB — Админ-панель</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #F5F0EB;
+            --card: #FFFFFF;
+            --olive: #2D4A2E;
+            --olive-light: #4A6B4A;
+            --olive-dark: #1E331F;
+            --gold: #D4A843;
+            --gold-light: #E8C86A;
+            --red: #C0392B;
+            --red-light: #E74C3C;
+            --dark: #2C1810;
+            --text: #2C1810;
+            --text-muted: #6B5A4F;
+            --shadow: 0 4px 24px rgba(44, 24, 16, 0.08);
+            --shadow-hover: 0 8px 40px rgba(44, 24, 16, 0.12);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.25s ease;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            padding: 0;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--olive); border-radius: 10px; }
+
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(245, 240, 235, 0.92);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .login-overlay.hidden { display: none; }
+
+        .login-modal {
+            background: var(--card);
+            border-radius: var(--radius);
+            max-width: 380px;
+            width: 100%;
+            padding: 40px 32px 32px;
+            box-shadow: var(--shadow-hover);
+            border: 1px solid rgba(44, 24, 16, 0.06);
+            position: relative;
+        }
+        .login-modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gold);
+        }
+        .login-modal__title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--olive-dark);
+            text-align: center;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+        .login-modal__title span { color: var(--gold); }
+        .login-modal__sub {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .login-modal__input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            border: 2px solid rgba(44, 24, 16, 0.08);
+            color: var(--text);
+            font-size: 16px;
+            transition: var(--transition);
+            margin-bottom: 14px;
+        }
+        .login-modal__input:focus {
+            border-color: var(--gold);
+            outline: none;
+            background: #fff;
+        }
+        .login-modal__btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            background: var(--olive);
+            color: #fff;
+            font-weight: 600;
+            font-size: 16px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+        }
+        .login-modal__btn:hover { background: var(--olive-dark); }
+        .login-modal__btn:active { transform: scale(0.97); }
+        .login-modal__error {
+            color: #C0392B;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 12px;
+            display: none;
+        }
+        .login-modal__error.show { display: block; }
+
+        .admin-panel {
+            display: none;
+            min-height: 100vh;
+            padding: 24px 20px 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .admin-panel.open { display: block; }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 14px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .admin-header__title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--olive-dark);
+            letter-spacing: -0.5px;
+        }
+        .admin-header__title span { color: var(--gold); }
+        .admin-header__close {
+            padding: 8px 20px;
+            border-radius: 50px;
+            background: var(--bg);
+            border: 2px solid rgba(44, 24, 16, 0.08);
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .admin-header__close:hover {
+            border-color: var(--olive);
+            color: var(--olive);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .stat-card {
+            background: var(--card);
+            border-radius: var(--radius-sm);
+            padding: 14px 14px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(44, 24, 16, 0.04);
+            text-align: center;
+            transition: var(--transition);
+        }
+        .stat-card:hover { box-shadow: var(--shadow-hover); }
+        .stat-card__number {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--olive);
+            line-height: 1.1;
+        }
+        .stat-card__number.green { color: #2E7D32; }
+        .stat-card__number.orange { color: #D4A843; }
+        .stat-card__number.red { color: var(--red); }
+        .stat-card__number.gold { color: var(--gold); }
+        .stat-card__label {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .filters {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 7px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            background: var(--bg);
+            color: var(--text-muted);
+            border: 2px solid rgba(44, 24, 16, 0.06);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .filter-btn.active {
+            background: var(--olive);
+            color: #fff;
+            border-color: var(--olive);
+        }
+        .filter-btn:hover:not(.active) {
+            border-color: var(--olive);
+            color: var(--olive);
+        }
+        .filter-btn.all-btn {
+            order: 999;
+        }
+
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .order-card {
+            background: var(--card);
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--gold);
+            transition: var(--transition);
+        }
+        .order-card:hover { box-shadow: var(--shadow-hover); }
+        .order-card.new-order {
+            border-left-color: #D4A843;
+            animation: pulse-border 1.5s ease;
+        }
+        .order-card.cancelled {
+            border-left-color: var(--red);
+            opacity: 0.7;
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-left-color: #D4A843; }
+            50% { border-left-color: #F1C40F; }
+        }
+
+        .order-card__top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+        .order-card__id {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--olive);
+        }
+        .order-card__date {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .order-card__type {
+            font-size: 11px;
+            background: var(--olive-light);
+            color: #fff;
+            padding: 1px 12px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .order-card__customer {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 2px 0;
+        }
+        .order-card__items {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 4px 0;
+            white-space: pre-line;
+        }
+        .order-card__total {
+            font-weight: 700;
+            color: var(--olive);
+            font-size: 16px;
+            margin: 2px 0;
+        }
+        .order-card__address {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 1px solid rgba(44, 24, 16, 0.06);
+        }
+        .order-card__bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(44, 24, 16, 0.06);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .order-card__status {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 14px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+        .order-card__status.processing {
+            background: rgba(212, 168, 67, 0.15);
+            color: #B7950B;
+        }
+        .order-card__status.accepted {
+            background: rgba(46, 125, 50, 0.12);
+            color: #2E7D32;
+        }
+        .order-card__status.cancelled {
+            background: rgba(192, 57, 43, 0.12);
+            color: var(--red);
+        }
+        .order-card__btn {
+            padding: 5px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 12px;
+            transition: var(--transition);
+            border: none;
+            background: var(--bg);
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        .order-card__btn:hover {
+            background: var(--olive);
+            color: #fff;
+        }
+        .order-card__btn.accept {
+            background: var(--olive);
+            color: #fff;
+        }
+        .order-card__btn.accept:hover { background: var(--olive-dark); }
+        .order-card__btn.cancel {
+            background: var(--red);
+            color: #fff;
+        }
+        .order-card__btn.cancel:hover { background: var(--red-light); }
+        .order-card__btn.restore {
+            background: var(--gold);
+            color: var(--olive-dark);
+        }
+        .order-card__btn.restore:hover { background: var(--gold-light); }
+
+        .empty-orders {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 60px 0;
+            font-size: 16px;
+            background: var(--card);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+        }
+
+        .notif-banner {
+            background: rgba(212, 168, 67, 0.08);
+            border: 1px solid rgba(212, 168, 67, 0.15);
+            border-radius: var(--radius-sm);
+            padding: 10px 16px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .notif-banner__text {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .notif-banner__text strong { color: var(--olive); }
+        .notif-banner__btn {
+            padding: 6px 18px;
+            border-radius: 50px;
+            background: var(--gold);
+            color: var(--olive-dark);
+            font-weight: 600;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .notif-banner__btn:hover { background: var(--gold-light); }
+
+        @media (max-width: 600px) {
+            .stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .stat-card__number { font-size: 22px; }
+            .admin-header__title { font-size: 22px; }
+            .order-card { padding: 14px 14px; }
+        }
+        @media (max-width: 400px) {
+            .stats { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .stat-card { padding: 10px 8px; }
+            .stat-card__number { font-size: 18px; }
+            .login-modal { padding: 28px 18px 20px; }
+            .login-modal__title { font-size: 20px; }
+            .order-card__id { font-size: 13px; }
+            .order-card__customer { font-size: 14px; }
+            .order-card__total { font-size: 15px; }
+            .filters { gap: 4px; }
+            .filter-btn { padding: 4px 10px; font-size: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-modal">
+            <div class="login-modal__title">BURGER<span>HUB</span></div>
+            <div class="login-modal__sub">Введите пароль для доступа</div>
+            <input type="password" class="login-modal__input" id="adminPassword" placeholder="Пароль" autocomplete="off">
+            <button class="login-modal__btn" id="loginBtn">Войти</button>
+            <div class="login-modal__error" id="loginError">Неверный пароль</div>
+        </div>
+    </div>
+
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <div class="admin-header__title">Заказы <span>BURGERHUB</span></div>
+            <button class="admin-header__close" onclick="window.location.href='index.html'">На главную</button>
+        </div>
+
+        <div class="notif-banner" id="notifBanner">
+            <div class="notif-banner__text">
+                <strong>Включите уведомления</strong> — оповещения о новых заказах
+            </div>
+            <button class="notif-banner__btn" id="enableNotifBtn">Включить</button>
+        </div>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-card__number" id="statTotal">0</div>
+                <div class="stat-card__label">Всего</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__number orange" id="statProcessing">0</div>
+                <div class="stat-card__label">В обработке</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__number green" id="statAccepted">0</div>
+                <div class="stat-card__label">Принято</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__number red" id="statCancelled">0</div>
+                <div class="stat-card__label">Отменено</div>
+            </div>
+        </div>
+
+        <!-- Статистика по выручке -->
+        <div class="stats" id="revenueStats">
+            <div class="stat-card">
+                <div class="stat-card__number gold" id="revenueToday">0 ₽</div>
+                <div class="stat-card__label">За день</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__number gold" id="revenueWeek">0 ₽</div>
+                <div class="stat-card__label">За неделю</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__number gold" id="revenueMonth">0 ₽</div>
+                <div class="stat-card__label">За месяц</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__number gold" id="revenueTotal">0 ₽</div>
+                <div class="stat-card__label">Всего</div>
+            </div>
+        </div>
+
+        <div class="filters" id="filters">
+            <button class="filter-btn active" data-filter="processing">В обработке</button>
+            <button class="filter-btn" data-filter="accepted">Принятые</button>
+            <button class="filter-btn" data-filter="cancelled">Отменённые</button>
+            <button class="filter-btn" data-filter="today">Сегодня</button>
+            <button class="filter-btn" data-filter="week">Неделя</button>
+            <button class="filter-btn" data-filter="month">Месяц</button>
+            <button class="filter-btn all-btn" data-filter="all">Все</button>
+        </div>
+
+        <div class="orders-list" id="ordersList">
+            <div class="empty-orders">Загрузка заказов...</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  НАСТРОЙКИ JSONBin.io
+        // ============================================================
+        const JSONBIN_BIN_ID = '6a63cb68da38895dfe8bb0f1';
+        const JSONBIN_MASTER_KEY = '$2a$10$H1rjUVhTASPDIZOjOcw5vuwbi6wZ2NIx01bSpW/15OcuMSQkhuO/.';
+        const JSONBIN_API_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+
+        const ADMIN_PASSWORD = 'Burger_hub1@';
+        let orders = [];
+        let currentFilter = 'processing';
+
+        // ============================================================
+        //  РАБОТА С JSONBin
+        // ============================================================
+        async function getOrdersFromCloud() {
+            try {
+                const response = await fetch(JSONBIN_API_URL, {
+                    headers: {
+                        'X-Master-Key': JSONBIN_MASTER_KEY,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (response.status === 404) return [];
+                if (!response.ok) return [];
+                const data = await response.json();
+                return Array.isArray(data.record) ? data.record : [];
+            } catch (error) {
+                console.error('Ошибка получения заказов:', error);
+                return [];
+            }
+        }
+
+        async function updateOrderInCloud(orderId, newStatus) {
+            try {
+                const currentOrders = await getOrdersFromCloud();
+                const orderIndex = currentOrders.findIndex(o => o.id === orderId);
+                if (orderIndex === -1) return false;
+                currentOrders[orderIndex].status = newStatus;
+                const response = await fetch(JSONBIN_API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_MASTER_KEY
+                    },
+                    body: JSON.stringify(currentOrders)
+                });
+                if (!response.ok) return false;
+                orders = currentOrders;
+                renderOrders();
+                return true;
+            } catch (error) {
+                console.error('Ошибка:', error);
+                return false;
+            }
+        }
+
+        // ============================================================
+        //  ЛОГИКА АДМИНКИ
+        // ============================================================
+        function updateStats() {
+            const total = orders.length;
+            const processing = orders.filter(o => o.status === 'processing').length;
+            const accepted = orders.filter(o => o.status === 'accepted').length;
+            const cancelled = orders.filter(o => o.status === 'cancelled').length;
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statProcessing').textContent = processing;
+            document.getElementById('statAccepted').textContent = accepted;
+            document.getElementById('statCancelled').textContent = cancelled;
+
+            // Выручка
+            const today = new Date().toDateString();
+            const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+            const monthAgo = new Date(); monthAgo.setMonth(monthAgo.getMonth() - 1);
+
+            const acceptedOrders = orders.filter(o => o.status === 'accepted');
+            
+            const revenueToday = acceptedOrders
+                .filter(o => new Date(o.date).toDateString() === today)
+                .reduce((sum, o) => sum + o.total, 0);
+            
+            const revenueWeek = acceptedOrders
+                .filter(o => new Date(o.date) >= weekAgo)
+                .reduce((sum, o) => sum + o.total, 0);
+            
+            const revenueMonth = acceptedOrders
+                .filter(o => new Date(o.date) >= monthAgo)
+                .reduce((sum, o) => sum + o.total, 0);
+            
+            const revenueTotal = acceptedOrders.reduce((sum, o) => sum + o.total, 0);
+
+            document.getElementById('revenueToday').textContent = revenueToday + ' ₽';
+            document.getElementById('revenueWeek').textContent = revenueWeek + ' ₽';
+            document.getElementById('revenueMonth').textContent = revenueMonth + ' ₽';
+            document.getElementById('revenueTotal').textContent = revenueTotal + ' ₽';
+        }
+
+        function getFilteredOrders(filter) {
+            const today = new Date().toDateString();
+            const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+            const monthAgo = new Date(); monthAgo.setMonth(monthAgo.getMonth() - 1);
+
+            let filtered = orders;
+            
+            if (filter !== 'all') {
+                switch(filter) {
+                    case 'processing': filtered = orders.filter(o => o.status === 'processing'); break;
+                    case 'accepted': filtered = orders.filter(o => o.status === 'accepted'); break;
+                    case 'cancelled': filtered = orders.filter(o => o.status === 'cancelled'); break;
+                    case 'today': filtered = orders.filter(o => new Date(o.date).toDateString() === today); break;
+                    case 'week': filtered = orders.filter(o => new Date(o.date) >= weekAgo); break;
+                    case 'month': filtered = orders.filter(o => new Date(o.date) >= monthAgo); break;
+                    default: filtered = orders;
+                }
+            }
+            
+            // Сортировка по дате (сначала новые)
+            return filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
+
+        function renderOrders() {
+            const container = document.getElementById('ordersList');
+            const filtered = getFilteredOrders(currentFilter);
+            updateStats();
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-orders">Заказов пока нет</div>';
+                return;
+            }
+
+            container.innerHTML = filtered.map(order => {
+                const statusText = {
+                    processing: 'В обработке',
+                    accepted: 'Принят',
+                    cancelled: 'Отменён'
+                }[order.status] || order.status;
+
+                const statusClass = order.status || 'processing';
+                const isCancelled = order.status === 'cancelled';
+
+                return `
+                    <div class="order-card ${order.status === 'processing' ? 'new-order' : ''} ${isCancelled ? 'cancelled' : ''}">
+                        <div class="order-card__top">
+                            <span class="order-card__id">Заказ #${String(order.id).slice(-6)}</span>
+                            <span class="order-card__date">${new Date(order.date).toLocaleString('ru-RU')}</span>
+                        </div>
+                        <div>
+                            <span class="order-card__type">${order.type === 'delivery' ? 'Доставка' : 'С собой'}</span>
+                        </div>
+                        <div class="order-card__customer">${order.name} | ${order.phone}</div>
+                        <div class="order-card__items">${order.items}</div>
+                        <div class="order-card__total">${order.total} ₽</div>
+                        ${order.address ? `<div class="order-card__address">📍 ${order.address}</div>` : ''}
+                        <div class="order-card__bottom">
+                            <span class="order-card__status ${statusClass}">
+                                ${statusText}
+                            </span>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                                ${order.status === 'processing' ? `
+                                    <button class="order-card__btn accept" onclick="updateOrder(${order.id}, 'accepted')">
+                                        Принять
+                                    </button>
+                                    <button class="order-card__btn cancel" onclick="updateOrder(${order.id}, 'cancelled')">
+                                        Отменить
+                                    </button>
+                                ` : ''}
+                                ${order.status === 'accepted' ? `
+                                    <button class="order-card__btn cancel" onclick="updateOrder(${order.id}, 'cancelled')">
+                                        Отменить
+                                    </button>
+                                ` : ''}
+                                ${order.status === 'cancelled' ? `
+                                    <button class="order-card__btn restore" onclick="updateOrder(${order.id}, 'processing')">
+                                        Восстановить
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        //  ЗВУК ДЛЯ АДМИНКИ
+        // ============================================================
+        function playNotificationSound() {
+    try {
+        const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = 880;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(1.0, audioCtx.currentTime);   // Максимум
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.3);
+        
+        setTimeout(() => {
+            const osc2 = audioCtx.createOscillator();
+            const gain2 = audioCtx.createGain();
+            osc2.connect(gain2);
+            gain2.connect(audioCtx.destination);
+            osc2.frequency.value = 1100;
+            osc2.type = 'sine';
+            gain2.gain.setValueAtTime(1.0, audioCtx.currentTime);  // Максимум
+            gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+            osc2.start(audioCtx.currentTime);
+            osc2.stop(audioCtx.currentTime + 0.15);
+        }, 150);
+    } catch (e) {}
+}
+
+        // ============================================================
+        //  ОБРАБОТЧИКИ
+        // ============================================================
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                renderOrders();
+            });
+        });
+
+        async function updateOrder(orderId, newStatus) {
+            const success = await updateOrderInCloud(orderId, newStatus);
+            if (success) {
+                if (newStatus === 'processing') {
+                    playNotificationSound();
+                }
+            }
+        }
+
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const password = document.getElementById('adminPassword').value.trim();
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('adminPanel').classList.add('open');
+                loadOrders();
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/sw.js').catch(() => {});
+                }
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    document.getElementById('notifBanner').style.display = 'none';
+                }
+                try { localStorage.setItem('burgerhubAdminAuth', 'true'); } catch(e) {}
+            } else {
+                document.getElementById('loginError').classList.add('show');
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminPassword').focus();
+            }
+        });
+
+        document.getElementById('adminPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        });
+
+        document.getElementById('enableNotifBtn').addEventListener('click', function() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        document.getElementById('notifBanner').style.display = 'none';
+                        if ('serviceWorker' in navigator) {
+                            navigator.serviceWorker.ready.then(reg => {
+                                reg.showNotification('Уведомления включены', {
+                                    body: 'Вы будете получать оповещения о новых заказах',
+                                    icon: 'https://placehold.co/192x192/2D4A2E/FFFFFF?text=BH&font=playfair',
+                                    badge: 'https://placehold.co/192x192/2D4A2E/FFFFFF?text=BH&font=playfair',
+                                });
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+        // ============================================================
+        //  ЗАГРУЗКА ЗАКАЗОВ И АВТООБНОВЛЕНИЕ
+        // ============================================================
+        async function loadOrders() {
+            orders = await getOrdersFromCloud();
+            renderOrders();
+            return orders;
+        }
+
+        let lastOrderCount = 0;
+
+        async function checkNewOrders() {
+            const currentOrders = await getOrdersFromCloud();
+            const newProcessing = currentOrders.filter(o => o.status === 'processing').length;
+            const oldProcessing = orders.filter(o => o.status === 'processing').length;
+            
+            if (newProcessing > oldProcessing) {
+                orders = currentOrders;
+                renderOrders();
+                playNotificationSound();
+                
+                if ('Notification' in window && Notification.permission === 'granted' && 'serviceWorker' in navigator) {
+                    navigator.serviceWorker.ready.then(reg => {
+                        reg.showNotification('🆕 Новый заказ!', {
+                            body: 'Поступил новый заказ в BURGERHUB',
+                            icon: 'https://placehold.co/192x192/2D4A2E/FFFFFF?text=BH&font=playfair',
+                            badge: 'https://placehold.co/192x192/2D4A2E/FFFFFF?text=BH&font=playfair',
+                            vibrate: [200, 100, 200],
+                            tag: 'new-order',
+                            renotify: true,
+                            requireInteraction: true,
+                            data: { url: '/admin.html' }
+                        });
+                    });
+                }
+            }
+            lastOrderCount = orders.length;
+        }
+
+        setInterval(checkNewOrders, 3000);
+
+        // ============================================================
+        //  АВТОВХОД
+        // ============================================================
+        (function() {
+            try {
+                if (localStorage.getItem('burgerhubAdminAuth') === 'true') {
+                    document.getElementById('loginOverlay').classList.add('hidden');
+                    document.getElementById('adminPanel').classList.add('open');
+                    loadOrders();
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.register('/sw.js').catch(() => {});
+                    }
+                    if ('Notification' in window && Notification.permission === 'granted') {
+                        document.getElementById('notifBanner').style.display = 'none';
+                    }
+                }
+            } catch(e) {}
+        })();
+
+        console.log('BURGERHUB Админ-панель загружена');
+        console.log('Пароль: Burger_hub1@');
+    </script>
+</body>
+</html>
