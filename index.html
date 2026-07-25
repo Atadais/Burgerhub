@@ -12,6 +12,95 @@
             box-sizing: border-box;
         }
 
+        /* Отключаем голубой фон при нажатии на мобильных */
+        button, 
+        button:focus, 
+        button:active,
+        a,
+        a:focus,
+        a:active,
+        [role="button"],
+        [role="button"]:focus,
+        [role="button"]:active,
+        .tab-btn,
+        .tab-btn:focus,
+        .tab-btn:active,
+        .header__orders,
+        .header__orders:focus,
+        .header__orders:active,
+        .product__btn,
+        .product__btn:focus,
+        .product__btn:active,
+        .order-type__btn,
+        .order-type__btn:focus,
+        .order-type__btn:active,
+        .cart-modal__submit,
+        .cart-modal__submit:focus,
+        .cart-modal__submit:active,
+        .product-overlay__btn,
+        .product-overlay__btn:focus,
+        .product-overlay__btn:active,
+        .product__size-btn,
+        .product__size-btn:focus,
+        .product__size-btn:active,
+        .product__variant-btn,
+        .product__variant-btn:focus,
+        .product__variant-btn:active,
+        .header__logo,
+        .header__logo:focus,
+        .header__logo:active,
+        .floating-cart,
+        .floating-cart:focus,
+        .floating-cart:active,
+        .cart-modal__close,
+        .cart-modal__close:focus,
+        .cart-modal__close:active,
+        .user-orders-modal__close,
+        .user-orders-modal__close:focus,
+        .user-orders-modal__close:active,
+        .product-overlay__close,
+        .product-overlay__close:focus,
+        .product-overlay__close:active,
+        .order-card__btn,
+        .order-card__btn:focus,
+        .order-card__btn:active,
+        .filter-btn,
+        .filter-btn:focus,
+        .filter-btn:active,
+        .product__image,
+        .product__image:focus,
+        .product__image:active,
+        .product__name,
+        .product__name:focus,
+        .product__name:active,
+        .product__price,
+        .product__price:focus,
+        .product__price:active,
+        .cart-item__qty button,
+        .cart-item__qty button:focus,
+        .cart-item__qty button:active,
+        .cart-item__remove,
+        .cart-item__remove:focus,
+        .cart-item__remove:active,
+        .product__qty-control button,
+        .product__qty-control button:focus,
+        .product__qty-control button:active,
+        .product-overlay__qty-control button,
+        .product-overlay__qty-control button:focus,
+        .product-overlay__qty-control button:active {
+            -webkit-tap-highlight-color: transparent !important;
+            -webkit-touch-callout: none !important;
+            -webkit-user-select: none !important;
+            user-select: none !important;
+        }
+
+        /* Разрешаем выделение текста в полях ввода */
+        input, textarea, select {
+            -webkit-tap-highlight-color: rgba(0,0,0,0.05) !important;
+            -webkit-user-select: text !important;
+            user-select: text !important;
+        }
+
         :root {
             --bg: #F5F0EB;
             --card: #FFFFFF;
@@ -930,6 +1019,14 @@
             font-size: 11px;
         }
 
+        /* Увеличенные отступы между полями в доставке */
+        .cart-modal__form .delivery-field {
+            margin-bottom: 8px;
+        }
+        .cart-modal__form .delivery-field:last-of-type {
+            margin-bottom: 0;
+        }
+
         .cafe-info {
             background: var(--bg);
             border-radius: var(--radius-sm);
@@ -1484,11 +1581,11 @@
                     <input type="tel" id="orderPhone" placeholder="Номер телефона" required>
 
                     <div id="deliveryFields">
-                        <input type="text" id="orderStreet" placeholder="Улица, дом">
-                        <input type="text" id="orderApartment" placeholder="Кв./Офис">
-                        <input type="text" id="orderFloor" placeholder="Этаж">
-                        <input type="text" id="orderEntrance" placeholder="Подъезд">
-                        <textarea id="orderComment" placeholder="Комментарий к адресу" rows="2"></textarea>
+                        <input type="text" id="orderStreet" placeholder="Улица, дом" class="delivery-field">
+                        <input type="text" id="orderApartment" placeholder="Кв./Офис" class="delivery-field">
+                        <input type="text" id="orderFloor" placeholder="Этаж" class="delivery-field">
+                        <input type="text" id="orderEntrance" placeholder="Подъезд" class="delivery-field">
+                        <textarea id="orderComment" placeholder="Комментарий к адресу" rows="2" class="delivery-field"></textarea>
                     </div>
 
                     <!-- ===== С СОБОЙ (С КАРТОЙ) ===== -->
