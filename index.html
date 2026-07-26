@@ -1394,6 +1394,136 @@
             .user-orders-modal__title { font-size: 15px; }
             .info-block__halal { font-size: 11px; padding: 3px 12px; }
         }
+        /* Обновленная премиальная палитра и переменные */
+:root {
+    --bg: #F8F6F4;
+    --card: #FFFFFF;
+    --olive: #2B422C;
+    --olive-light: #4A6B4A;
+    --olive-dark: #19261A;
+    --gold: #D4AF37;
+    --gold-light: #F0D575;
+    --dark: #23120B;
+    --text: #23120B;
+    --text-muted: #7A6960;
+    --shadow: 0 10px 30px rgba(35, 18, 11, 0.04);
+    --shadow-hover: 0 20px 50px rgba(35, 18, 11, 0.08);
+    --radius: 24px;
+    --radius-sm: 14px;
+    --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --tap-target: 48px; /* Увеличенная зона нажатия для мобильных */
+}
+
+/* Скроллируемые табы для удобства на мобильных */
+.tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+    min-height: 40px;
+    padding: 8px 20px;
+    font-size: 14px;
+}
+
+/* Премиальные карточки товаров и кнопки */
+.product {
+    border: 1px solid rgba(0,0,0,0.03);
+    border-radius: var(--radius);
+}
+.product__btn, .product__qty-control button, .product__size-btn, .product__variant-btn {
+    min-height: var(--tap-target); /* Оптимизация под палец */
+    font-size: 13px;
+}
+.product__qty-control button {
+    width: var(--tap-target);
+}
+
+/* Улучшенная форма корзины и оформление заказа */
+.cart-modal__form input,
+.cart-modal__form textarea {
+    min-height: var(--tap-target);
+    font-size: 15px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    background: #FDFCFB;
+}
+.order-type__btn {
+    min-height: var(--tap-target);
+    font-size: 14px;
+    border-radius: var(--radius-sm);
+}
+
+/* Закрепленная кнопка оформления (всегда под рукой) */
+.cart-modal__submit {
+    min-height: 56px;
+    font-size: 16px;
+    border-radius: 16px;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    box-shadow: 0 -10px 20px rgba(255,255,255,0.9);
+}
+
+/* Плавные анимации и дорогие тени для модалок */
+.cart-modal, .user-orders-modal, .product-overlay__content {
+    box-shadow: var(--shadow-hover);
+    border: none;
+}
+        /* Glassmorphism и премиальные тени */
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-blur: blur(16px);
+    --tap-size: 56px; /* Строго по стандарту Mobile First */
+}
+
+.cart-modal, .product-overlay__content, .sticky-header {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 24px 48px rgba(35, 18, 11, 0.08);
+}
+
+/* Увеличенные зоны нажатия (Mobile First) */
+.product__btn, 
+.product__qty-control button, 
+.cart-modal__form input, 
+.cart-modal__form textarea,
+.cart-modal__submit {
+    min-height: var(--tap-size);
+    border-radius: 16px;
+}
+
+.product__qty-control button {
+    min-width: var(--tap-size);
+    font-size: 20px; /* Крупные + и - */
+}
+
+/* Плавные анимации и эффекты нажатия */
+button, input, .product {
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+button:active, .product__qty-control button:active {
+    transform: scale(0.94);
+    opacity: 0.8;
+}
+
+.cart-modal.open {
+    animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
     </style>
 </head>
 <body>
