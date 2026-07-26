@@ -627,7 +627,7 @@
             </div>
         </div>
 
-        <div class="stats">
+        <div class="stats revenue-stats" id="revenueStats" style="display:none;">
             <div class="stat-card">
                 <div class="stat-card__number" id="revenueToday">0 &#8381;</div>
                 <div class="stat-card__label">За день</div>
@@ -651,6 +651,7 @@
                 <button class="filter-btn active" data-filter="processing">В обработке</button>
                 <button class="filter-btn" data-filter="accepted">Принятые</button>
                 <button class="filter-btn" data-filter="cancelled">Отменённые</button>
+                <button class="filter-btn" id="revenueToggle">Выручка</button>
                 <button class="filter-btn" data-filter="today">Сегодня</button>
                 <button class="filter-btn" data-filter="all">Все</button>
                 <button class="filter-btn" data-filter="week">Неделя</button>
@@ -906,11 +907,23 @@
         // ============================================================
         document.querySelectorAll('.filter-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
+                if (!this.dataset.filter) return;
                 document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
                 this.classList.add('active');
                 currentFilter = this.dataset.filter;
                 renderOrders();
             });
+        });
+
+        document.getElementById('revenueToggle').addEventListener('click', function() {
+            var el = document.getElementById('revenueStats');
+            if (el.style.display === 'none') {
+                el.style.display = 'grid';
+                this.classList.add('active');
+            } else {
+                el.style.display = 'none';
+                this.classList.remove('active');
+            }
         });
 
         document.getElementById('loginBtn').addEventListener('click', function() {
