@@ -7,43 +7,69 @@
     <link rel="manifest" href="manifest.json">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --bg: #F5F0EB;
-            --card: #FFFFFF;
-            --olive: #2D4A2E;
-            --olive-light: #4A6B4A;
-            --olive-dark: #1E331F;
-            --gold: #D4A843;
-            --gold-light: #E8C86A;
-            --red: #C0392B;
-            --red-light: #E74C3C;
-            --dark: #2C1810;
-            --text: #2C1810;
-            --text-muted: #6B5A4F;
-            --shadow: 0 4px 24px rgba(44, 24, 16, 0.08);
-            --shadow-hover: 0 8px 40px rgba(44, 24, 16, 0.12);
-            --radius: 12px;
-            --radius-sm: 8px;
-            --transition: all 0.25s ease;
+
+        button, button:focus, button:active,
+        a, a:focus, a:active {
+            -webkit-tap-highlight-color: transparent !important;
+            -webkit-touch-callout: none !important;
+            user-select: none !important;
         }
+
+        input { -webkit-tap-highlight-color: rgba(212, 162, 78, 0.15) !important; }
+
+        :root {
+            --bg: #0C0C0E;
+            --bg-elevated: #161618;
+            --bg-card: #1C1C20;
+            --bg-card-hover: #222226;
+            --bg-glass: rgba(12, 12, 14, 0.82);
+            --bg-input: #121214;
+            --text-primary: #F0EDE8;
+            --text-secondary: #9C9690;
+            --text-tertiary: #6B6662;
+            --accent: #D4A24E;
+            --accent-hover: #E0B45E;
+            --accent-dim: rgba(212, 162, 78, 0.12);
+            --accent-text: #D4A24E;
+            --green: #4CAF50;
+            --green-dim: rgba(76, 175, 80, 0.1);
+            --red: #EF5350;
+            --red-dim: rgba(239, 83, 80, 0.1);
+            --border: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(255, 255, 255, 0.1);
+            --border-accent: rgba(212, 162, 78, 0.25);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.7);
+            --shadow-glow: 0 4px 32px rgba(212, 162, 78, 0.08);
+            --radius-sm: 12px;
+            --radius: 18px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            --transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
             background: var(--bg);
-            color: var(--text);
+            color: var(--text-primary);
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
-            padding: 0;
+            -moz-osx-font-smoothing: grayscale;
         }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--olive); border-radius: 10px; }
 
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 10px; }
+
+        /* ===== LOGIN ===== */
         .login-overlay {
             position: fixed;
             inset: 0;
             z-index: 1000;
-            background: rgba(245, 240, 235, 0.92);
-            backdrop-filter: blur(12px);
+            background: rgba(12, 12, 14, 0.92);
+            backdrop-filter: blur(20px) saturate(1.2);
+            -webkit-backdrop-filter: blur(20px) saturate(1.2);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -52,36 +78,50 @@
         .login-overlay.hidden { display: none; }
 
         .login-modal {
-            background: var(--card);
-            border-radius: var(--radius);
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
             max-width: 380px;
             width: 100%;
             padding: 40px 32px 32px;
-            box-shadow: var(--shadow-hover);
-            border: 1px solid rgba(44, 24, 16, 0.06);
-            position: relative;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
         }
         .login-modal::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gold);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 0 0 3px 3px;
+        }
+        .login-modal__logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), #C89430);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            color: #0C0C0E;
+            margin: 0 auto 16px;
+            box-shadow: 0 4px 20px rgba(212, 162, 78, 0.3);
         }
         .login-modal__title {
-            font-size: 26px;
+            font-size: 20px;
             font-weight: 700;
-            color: var(--olive-dark);
+            color: var(--text-primary);
             text-align: center;
-            margin-bottom: 4px;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.3px;
         }
-        .login-modal__title span { color: var(--gold); }
+        .login-modal__title span { color: var(--accent-text); }
         .login-modal__sub {
-            font-size: 14px;
-            color: var(--text-muted);
+            font-size: 13px;
+            color: var(--text-tertiary);
             text-align: center;
             margin-bottom: 24px;
         }
@@ -89,42 +129,43 @@
             width: 100%;
             padding: 14px 16px;
             border-radius: var(--radius-sm);
-            background: var(--bg);
-            border: 2px solid rgba(44, 24, 16, 0.08);
-            color: var(--text);
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
             font-size: 16px;
             transition: var(--transition);
             margin-bottom: 14px;
+            outline: none;
         }
         .login-modal__input:focus {
-            border-color: var(--gold);
-            outline: none;
-            background: #fff;
+            border-color: var(--border-accent);
+            box-shadow: 0 0 0 3px var(--accent-dim);
         }
         .login-modal__btn {
             width: 100%;
             padding: 14px;
             border-radius: var(--radius-sm);
-            background: var(--olive);
-            color: #fff;
-            font-weight: 600;
-            font-size: 16px;
+            background: linear-gradient(135deg, var(--accent), #C89430);
+            color: #0C0C0E;
+            font-weight: 700;
+            font-size: 15px;
             transition: var(--transition);
             border: none;
             cursor: pointer;
             letter-spacing: 0.3px;
+            box-shadow: 0 2px 16px rgba(212, 162, 78, 0.2);
         }
-        .login-modal__btn:hover { background: var(--olive-dark); }
         .login-modal__btn:active { transform: scale(0.97); }
         .login-modal__error {
-            color: #C0392B;
-            font-size: 14px;
+            color: var(--red);
+            font-size: 13px;
             text-align: center;
             margin-top: 12px;
             display: none;
         }
         .login-modal__error.show { display: block; }
 
+        /* ===== ADMIN PANEL ===== */
         .admin-panel {
             display: none;
             min-height: 100vh;
@@ -138,125 +179,224 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 14px;
-            margin-bottom: 28px;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
             flex-wrap: wrap;
             gap: 12px;
         }
-        .admin-header__title {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--olive-dark);
-            letter-spacing: -0.5px;
+        .admin-header__logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .admin-header__title span { color: var(--gold); }
-        .admin-header__close {
-            padding: 8px 20px;
-            border-radius: 50px;
-            background: var(--bg);
-            border: 2px solid rgba(44, 24, 16, 0.08);
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 500;
+        .admin-header__icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent), #C89430);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 11px;
+            color: #0C0C0E;
+            box-shadow: 0 2px 12px rgba(212, 162, 78, 0.3);
+        }
+        .admin-header__title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+        .admin-header__title span { color: var(--accent-text); }
+        .admin-header__actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .admin-header__btn {
+            padding: 8px 18px;
+            border-radius: var(--radius-full);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .admin-header__close:hover {
-            border-color: var(--olive);
-            color: var(--olive);
+        .admin-header__btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+        .admin-header__btn:active { transform: scale(0.96); }
+        .admin-header__btn.primary {
+            background: linear-gradient(135deg, var(--accent), #C89430);
+            color: #0C0C0E;
+            border-color: var(--accent);
         }
 
+        /* ===== STATS ===== */
         .stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 10px;
+            margin-bottom: 12px;
         }
         .stat-card {
-            background: var(--card);
+            background: var(--bg-card);
             border-radius: var(--radius-sm);
-            padding: 14px 14px;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(44, 24, 16, 0.04);
+            padding: 16px 14px;
+            border: 1px solid var(--border);
             text-align: center;
             transition: var(--transition);
         }
-        .stat-card:hover { box-shadow: var(--shadow-hover); }
+        .stat-card:hover { border-color: var(--border-hover); }
         .stat-card__number {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
-            color: var(--olive);
+            color: var(--accent-text);
             line-height: 1.1;
+            letter-spacing: -0.5px;
         }
-        .stat-card__number.green { color: #2E7D32; }
-        .stat-card__number.orange { color: #D4A843; }
+        .stat-card__number.green { color: var(--green); }
+        .stat-card__number.orange { color: var(--accent-text); }
         .stat-card__number.red { color: var(--red); }
-        .stat-card__number.gold { color: var(--gold); }
         .stat-card__label {
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-top: 2px;
+            font-size: 9px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
             font-weight: 600;
         }
 
+        /* ===== TOOLBAR ===== */
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
         .filters {
             display: flex;
-            gap: 6px;
-            margin-bottom: 18px;
+            gap: 4px;
             flex-wrap: wrap;
+            flex: 1;
         }
         .filter-btn {
             padding: 7px 16px;
-            border-radius: 50px;
-            font-size: 12px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
             font-weight: 600;
-            background: var(--bg);
-            color: var(--text-muted);
-            border: 2px solid rgba(44, 24, 16, 0.06);
+            background: var(--bg-card);
+            color: var(--text-tertiary);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+            min-height: 36px;
+            white-space: nowrap;
+        }
+        .filter-btn:hover { border-color: var(--border-hover); color: var(--text-secondary); }
+        .filter-btn.active {
+            background: var(--accent-dim);
+            color: var(--accent-text);
+            border-color: var(--border-accent);
+        }
+        .filter-btn:active { transform: scale(0.95); }
+
+        .toolbar__right {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .search-input {
+            padding: 8px 14px;
+            border-radius: var(--radius-full);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 12px;
+            width: 160px;
+            transition: var(--transition);
+            outline: none;
+            min-height: 36px;
+        }
+        .search-input:focus { border-color: var(--border-accent); }
+        .search-input::placeholder { color: var(--text-tertiary); }
+        .toolbar__icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 16px;
+        }
+        .toolbar__icon-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+        .toolbar__icon-btn:active { transform: scale(0.9); }
+        .toolbar__icon-btn.active { color: var(--accent-text); border-color: var(--border-accent); background: var(--accent-dim); }
+
+        /* ===== NOTIF BANNER ===== */
+        .notif-banner {
+            background: var(--accent-dim);
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-sm);
+            padding: 10px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .notif-banner__text {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .notif-banner__text strong { color: var(--accent-text); }
+        .notif-banner__btn {
+            padding: 6px 18px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--accent), #C89430);
+            color: #0C0C0E;
+            font-weight: 600;
+            font-size: 12px;
+            border: none;
             cursor: pointer;
             transition: var(--transition);
         }
-        .filter-btn.active {
-            background: var(--olive);
-            color: #fff;
-            border-color: var(--olive);
-        }
-        .filter-btn:hover:not(.active) {
-            border-color: var(--olive);
-            color: var(--olive);
-        }
-        .filter-btn.all-btn {
-            order: 999;
-        }
+        .notif-banner__btn:active { transform: scale(0.95); }
 
+        /* ===== ORDERS ===== */
         .orders-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .order-card {
-            background: var(--card);
+            background: var(--bg-card);
             border-radius: var(--radius-sm);
             padding: 16px 18px;
-            box-shadow: var(--shadow);
-            border-left: 4px solid var(--gold);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
             transition: var(--transition);
         }
-        .order-card:hover { box-shadow: var(--shadow-hover); }
-        .order-card.new-order {
-            border-left-color: #D4A843;
-            animation: pulse-border 1.5s ease;
-        }
+        .order-card:hover { border-color: var(--border-hover); }
+        .order-card.processing { border-left-color: var(--accent); }
+        .order-card.accepted { border-left-color: var(--green); }
         .order-card.cancelled {
             border-left-color: var(--red);
-            opacity: 0.7;
-        }
-        @keyframes pulse-border {
-            0%, 100% { border-left-color: #D4A843; }
-            50% { border-left-color: #F1C40F; }
+            opacity: 0.6;
         }
 
         .order-card__top {
@@ -265,51 +405,54 @@
             align-items: flex-start;
             flex-wrap: wrap;
             gap: 6px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         .order-card__id {
             font-weight: 700;
-            font-size: 15px;
-            color: var(--olive);
+            font-size: 14px;
+            color: var(--accent-text);
+            letter-spacing: -0.2px;
         }
         .order-card__date {
-            font-size: 12px;
-            color: var(--text-muted);
+            font-size: 11px;
+            color: var(--text-tertiary);
         }
         .order-card__type {
-            font-size: 11px;
-            background: var(--olive-light);
-            color: #fff;
-            padding: 1px 12px;
-            border-radius: 50px;
+            font-size: 10px;
+            background: var(--accent-dim);
+            color: var(--accent-text);
+            padding: 2px 12px;
+            border-radius: var(--radius-full);
             display: inline-block;
             font-weight: 600;
             letter-spacing: 0.3px;
+            border: 1px solid var(--border-accent);
         }
         .order-card__customer {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
-            color: var(--dark);
-            margin: 2px 0;
+            color: var(--text-primary);
+            margin: 4px 0;
         }
         .order-card__items {
-            font-size: 13px;
-            color: var(--text-muted);
+            font-size: 12px;
+            color: var(--text-secondary);
             margin: 4px 0;
             white-space: pre-line;
+            line-height: 1.5;
         }
         .order-card__total {
             font-weight: 700;
-            color: var(--olive);
-            font-size: 16px;
-            margin: 2px 0;
+            color: var(--accent-text);
+            font-size: 15px;
+            margin: 4px 0;
         }
         .order-card__address {
-            font-size: 12px;
-            color: var(--text-muted);
+            font-size: 11px;
+            color: var(--text-tertiary);
             margin-top: 4px;
             padding-top: 4px;
-            border-top: 1px solid rgba(44, 24, 16, 0.06);
+            border-top: 1px solid var(--border);
         }
         .order-card__bottom {
             display: flex;
@@ -317,136 +460,153 @@
             align-items: center;
             margin-top: 10px;
             padding-top: 10px;
-            border-top: 1px solid rgba(44, 24, 16, 0.06);
+            border-top: 1px solid var(--border);
             flex-wrap: wrap;
             gap: 8px;
         }
         .order-card__status {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             padding: 3px 14px;
-            border-radius: 50px;
+            border-radius: var(--radius-full);
             display: inline-block;
         }
         .order-card__status.processing {
-            background: rgba(212, 168, 67, 0.15);
-            color: #B7950B;
+            background: var(--accent-dim);
+            color: var(--accent-text);
+            border: 1px solid var(--border-accent);
         }
         .order-card__status.accepted {
-            background: rgba(46, 125, 50, 0.12);
-            color: #2E7D32;
+            background: var(--green-dim);
+            color: var(--green);
+            border: 1px solid rgba(76, 175, 80, 0.2);
         }
         .order-card__status.cancelled {
-            background: rgba(192, 57, 43, 0.12);
+            background: var(--red-dim);
             color: var(--red);
+            border: 1px solid rgba(239, 83, 80, 0.15);
+        }
+        .order-card__actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
         }
         .order-card__btn {
-            padding: 5px 16px;
-            border-radius: 50px;
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
             font-weight: 600;
-            font-size: 12px;
+            font-size: 11px;
             transition: var(--transition);
             border: none;
-            background: var(--bg);
-            color: var(--text-muted);
             cursor: pointer;
+            min-height: 34px;
         }
-        .order-card__btn:hover {
-            background: var(--olive);
-            color: #fff;
-        }
+        .order-card__btn:active { transform: scale(0.94); }
         .order-card__btn.accept {
-            background: var(--olive);
+            background: linear-gradient(135deg, var(--green), #388E3C);
             color: #fff;
         }
-        .order-card__btn.accept:hover { background: var(--olive-dark); }
         .order-card__btn.cancel {
             background: var(--red);
             color: #fff;
         }
-        .order-card__btn.cancel:hover { background: var(--red-light); }
         .order-card__btn.restore {
-            background: var(--gold);
-            color: var(--olive-dark);
+            background: linear-gradient(135deg, var(--accent), #C89430);
+            color: #0C0C0E;
         }
-        .order-card__btn.restore:hover { background: var(--gold-light); }
 
         .empty-orders {
             text-align: center;
-            color: var(--text-muted);
+            color: var(--text-tertiary);
             padding: 60px 0;
-            font-size: 16px;
-            background: var(--card);
+            font-size: 14px;
+            background: var(--bg-card);
             border-radius: var(--radius-sm);
-            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
         }
 
-        .notif-banner {
-            background: rgba(212, 168, 67, 0.08);
-            border: 1px solid rgba(212, 168, 67, 0.15);
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: var(--radius-sm);
-            padding: 10px 16px;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .notif-banner__text {
+            padding: 12px 20px;
+            color: var(--text-primary);
             font-size: 13px;
-            color: var(--text-muted);
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            z-index: 2000;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            white-space: nowrap;
         }
-        .notif-banner__text strong { color: var(--olive); }
-        .notif-banner__btn {
-            padding: 6px 18px;
-            border-radius: 50px;
-            background: var(--gold);
-            color: var(--olive-dark);
-            font-weight: 600;
-            font-size: 13px;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
-        .notif-banner__btn:hover { background: var(--gold-light); }
 
-        @media (max-width: 600px) {
-            .stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
             .stat-card__number { font-size: 22px; }
-            .admin-header__title { font-size: 22px; }
+            .admin-header { flex-direction: column; align-items: flex-start; }
+            .admin-header__actions { width: 100%; justify-content: flex-end; }
+            .toolbar { flex-direction: column; align-items: stretch; }
+            .filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+            .filter-btn { flex-shrink: 0; }
+            .toolbar__right { justify-content: flex-end; }
+            .search-input { width: 140px; }
             .order-card { padding: 14px 14px; }
+            .admin-panel { padding: 16px 12px 30px; }
         }
         @media (max-width: 400px) {
-            .stats { grid-template-columns: 1fr 1fr; gap: 8px; }
-            .stat-card { padding: 10px 8px; }
+            .stats { grid-template-columns: 1fr 1fr; gap: 6px; }
+            .stat-card { padding: 12px 10px; }
             .stat-card__number { font-size: 18px; }
-            .login-modal { padding: 28px 18px 20px; }
-            .login-modal__title { font-size: 20px; }
+            .login-modal { padding: 28px 18px 24px; }
+            .admin-header__title { font-size: 17px; }
             .order-card__id { font-size: 13px; }
-            .order-card__customer { font-size: 14px; }
-            .order-card__total { font-size: 15px; }
-            .filters { gap: 4px; }
-            .filter-btn { padding: 4px 10px; font-size: 10px; }
+            .order-card__customer { font-size: 13px; }
+            .order-card__total { font-size: 14px; }
+            .filter-btn { font-size: 10px; padding: 5px 12px; min-height: 32px; }
+            .search-input { width: 120px; font-size: 11px; }
+            .admin-header__btn { font-size: 11px; padding: 6px 14px; min-height: 36px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ===== LOGIN ===== -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-modal">
+            <div class="login-modal__logo">BH</div>
             <div class="login-modal__title">BURGER<span>HUB</span></div>
-            <div class="login-modal__sub">Введите пароль для доступа</div>
+            <div class="login-modal__sub">Введите пароль для доступа к панели</div>
             <input type="password" class="login-modal__input" id="adminPassword" placeholder="Пароль" autocomplete="off">
             <button class="login-modal__btn" id="loginBtn">Войти</button>
             <div class="login-modal__error" id="loginError">Неверный пароль</div>
         </div>
     </div>
 
+    <!-- ===== ADMIN PANEL ===== -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-header">
-            <div class="admin-header__title">Заказы <span>BURGERHUB</span></div>
-            <button class="admin-header__close" onclick="window.location.href='index.html'">На главную</button>
+            <div class="admin-header__logo">
+                <div class="admin-header__icon">BH</div>
+                <div class="admin-header__title">Заказы <span>BURGERHUB</span></div>
+            </div>
+            <div class="admin-header__actions">
+                <button class="admin-header__btn" id="exportBtn">Экспорт</button>
+                <button class="admin-header__btn primary" onclick="window.location.href='index.html'">На сайт</button>
+            </div>
         </div>
 
         <div class="notif-banner" id="notifBanner">
@@ -475,34 +635,39 @@
             </div>
         </div>
 
-        <!-- Статистика по выручке -->
-        <div class="stats" id="revenueStats">
+        <div class="stats">
             <div class="stat-card">
-                <div class="stat-card__number gold" id="revenueToday">0 ₽</div>
+                <div class="stat-card__number" id="revenueToday">0 &#8381;</div>
                 <div class="stat-card__label">За день</div>
             </div>
             <div class="stat-card">
-                <div class="stat-card__number gold" id="revenueWeek">0 ₽</div>
+                <div class="stat-card__number" id="revenueWeek">0 &#8381;</div>
                 <div class="stat-card__label">За неделю</div>
             </div>
             <div class="stat-card">
-                <div class="stat-card__number gold" id="revenueMonth">0 ₽</div>
+                <div class="stat-card__number" id="revenueMonth">0 &#8381;</div>
                 <div class="stat-card__label">За месяц</div>
             </div>
             <div class="stat-card">
-                <div class="stat-card__number gold" id="revenueTotal">0 ₽</div>
+                <div class="stat-card__number" id="revenueTotal">0 &#8381;</div>
                 <div class="stat-card__label">Всего</div>
             </div>
         </div>
 
-        <div class="filters" id="filters">
-            <button class="filter-btn active" data-filter="processing">В обработке</button>
-            <button class="filter-btn" data-filter="accepted">Принятые</button>
-            <button class="filter-btn" data-filter="cancelled">Отменённые</button>
-            <button class="filter-btn" data-filter="today">Сегодня</button>
-            <button class="filter-btn" data-filter="week">Неделя</button>
-            <button class="filter-btn" data-filter="month">Месяц</button>
-            <button class="filter-btn all-btn" data-filter="all">Все</button>
+        <div class="toolbar">
+            <div class="filters" id="filters">
+                <button class="filter-btn active" data-filter="processing">В обработке</button>
+                <button class="filter-btn" data-filter="accepted">Принятые</button>
+                <button class="filter-btn" data-filter="cancelled">Отменённые</button>
+                <button class="filter-btn" data-filter="today">Сегодня</button>
+                <button class="filter-btn" data-filter="week">Неделя</button>
+                <button class="filter-btn" data-filter="month">Месяц</button>
+                <button class="filter-btn" data-filter="all">Все</button>
+            </div>
+            <div class="toolbar__right">
+                <input class="search-input" id="searchInput" placeholder="Поиск по номеру, имени, телефону...">
+                <button class="toolbar__icon-btn" id="soundToggle" title="Звук уведомлений">&#x1F50A;</button>
+            </div>
         </div>
 
         <div class="orders-list" id="ordersList">
@@ -512,18 +677,20 @@
 
     <script>
         // ============================================================
-        //  НАСТРОЙКИ JSONBin.io
+        //  JSONBin.io
         // ============================================================
         const JSONBIN_BIN_ID = '6a63cb68da38895dfe8bb0f1';
         const JSONBIN_MASTER_KEY = '$2a$10$H1rjUVhTASPDIZOjOcw5vuwbi6wZ2NIx01bSpW/15OcuMSQkhuO/.';
-        const JSONBIN_API_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
-
+        const JSONBIN_API_URL = 'https://api.jsonbin.io/v3/b/' + JSONBIN_BIN_ID;
         const ADMIN_PASSWORD = 'Burger_hub1@';
+
         let orders = [];
         let currentFilter = 'processing';
+        let soundEnabled = true;
+        let searchQuery = '';
 
         // ============================================================
-        //  РАБОТА С JSONBin
+        //  API
         // ============================================================
         async function getOrdersFromCloud() {
             try {
@@ -537,10 +704,7 @@
                 if (!response.ok) return [];
                 const data = await response.json();
                 return Array.isArray(data.record) ? data.record : [];
-            } catch (error) {
-                console.error('Ошибка получения заказов:', error);
-                return [];
-            }
+            } catch (e) { return []; }
         }
 
         async function updateOrderInCloud(orderId, newStatus) {
@@ -561,79 +725,111 @@
                 orders = currentOrders;
                 renderOrders();
                 return true;
-            } catch (error) {
-                console.error('Ошибка:', error);
-                return false;
-            }
+            } catch (e) { return false; }
         }
 
         // ============================================================
-        //  ЛОГИКА АДМИНКИ
+        //  TOAST
+        // ============================================================
+        function showToast(msg) {
+            var t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(function() { t.classList.remove('show'); }, 2200);
+        }
+
+        // ============================================================
+        //  SOUND
+        // ============================================================
+        function playNotificationSound() {
+            if (!soundEnabled) return;
+            try {
+                var ctx = new (window.AudioContext || window.webkitAudioContext)();
+                function beep(freq, dur, delay) {
+                    setTimeout(function() {
+                        var o = ctx.createOscillator();
+                        var g = ctx.createGain();
+                        o.connect(g);
+                        g.connect(ctx.destination);
+                        o.frequency.value = freq;
+                        o.type = 'sine';
+                        g.gain.setValueAtTime(0.8, ctx.currentTime);
+                        g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + dur);
+                        o.start(ctx.currentTime);
+                        o.stop(ctx.currentTime + dur);
+                    }, delay);
+                }
+                beep(880, 0.25, 0);
+                beep(1100, 0.15, 150);
+            } catch(e) {}
+        }
+
+        // ============================================================
+        //  STATS
         // ============================================================
         function updateStats() {
-            const total = orders.length;
-            const processing = orders.filter(o => o.status === 'processing').length;
-            const accepted = orders.filter(o => o.status === 'accepted').length;
-            const cancelled = orders.filter(o => o.status === 'cancelled').length;
+            var total = orders.length;
+            var processing = orders.filter(function(o) { return o.status === 'processing'; }).length;
+            var accepted = orders.filter(function(o) { return o.status === 'accepted'; }).length;
+            var cancelled = orders.filter(function(o) { return o.status === 'cancelled'; }).length;
 
             document.getElementById('statTotal').textContent = total;
             document.getElementById('statProcessing').textContent = processing;
             document.getElementById('statAccepted').textContent = accepted;
             document.getElementById('statCancelled').textContent = cancelled;
 
-            // Выручка
-            const today = new Date().toDateString();
-            const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
-            const monthAgo = new Date(); monthAgo.setMonth(monthAgo.getMonth() - 1);
+            var today = new Date().toDateString();
+            var weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+            var monthAgo = new Date(); monthAgo.setMonth(monthAgo.getMonth() - 1);
 
-            const acceptedOrders = orders.filter(o => o.status === 'accepted');
-            
-            const revenueToday = acceptedOrders
-                .filter(o => new Date(o.date).toDateString() === today)
-                .reduce((sum, o) => sum + o.total, 0);
-            
-            const revenueWeek = acceptedOrders
-                .filter(o => new Date(o.date) >= weekAgo)
-                .reduce((sum, o) => sum + o.total, 0);
-            
-            const revenueMonth = acceptedOrders
-                .filter(o => new Date(o.date) >= monthAgo)
-                .reduce((sum, o) => sum + o.total, 0);
-            
-            const revenueTotal = acceptedOrders.reduce((sum, o) => sum + o.total, 0);
+            var acceptedOrders = orders.filter(function(o) { return o.status === 'accepted'; });
 
-            document.getElementById('revenueToday').textContent = revenueToday + ' ₽';
-            document.getElementById('revenueWeek').textContent = revenueWeek + ' ₽';
-            document.getElementById('revenueMonth').textContent = revenueMonth + ' ₽';
-            document.getElementById('revenueTotal').textContent = revenueTotal + ' ₽';
+            var rToday = acceptedOrders.filter(function(o) { return new Date(o.date).toDateString() === today; }).reduce(function(s, o) { return s + o.total; }, 0);
+            var rWeek = acceptedOrders.filter(function(o) { return new Date(o.date) >= weekAgo; }).reduce(function(s, o) { return s + o.total; }, 0);
+            var rMonth = acceptedOrders.filter(function(o) { return new Date(o.date) >= monthAgo; }).reduce(function(s, o) { return s + o.total; }, 0);
+            var rTotal = acceptedOrders.reduce(function(s, o) { return s + o.total; }, 0);
+
+            document.getElementById('revenueToday').textContent = rToday + ' \u20BD';
+            document.getElementById('revenueWeek').textContent = rWeek + ' \u20BD';
+            document.getElementById('revenueMonth').textContent = rMonth + ' \u20BD';
+            document.getElementById('revenueTotal').textContent = rTotal + ' \u20BD';
         }
 
         function getFilteredOrders(filter) {
-            const today = new Date().toDateString();
-            const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
-            const monthAgo = new Date(); monthAgo.setMonth(monthAgo.getMonth() - 1);
+            var today = new Date().toDateString();
+            var weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+            var monthAgo = new Date(); monthAgo.setMonth(monthAgo.getMonth() - 1);
 
-            let filtered = orders;
-            
+            var filtered = orders;
             if (filter !== 'all') {
                 switch(filter) {
-                    case 'processing': filtered = orders.filter(o => o.status === 'processing'); break;
-                    case 'accepted': filtered = orders.filter(o => o.status === 'accepted'); break;
-                    case 'cancelled': filtered = orders.filter(o => o.status === 'cancelled'); break;
-                    case 'today': filtered = orders.filter(o => new Date(o.date).toDateString() === today); break;
-                    case 'week': filtered = orders.filter(o => new Date(o.date) >= weekAgo); break;
-                    case 'month': filtered = orders.filter(o => new Date(o.date) >= monthAgo); break;
+                    case 'processing': filtered = orders.filter(function(o) { return o.status === 'processing'; }); break;
+                    case 'accepted': filtered = orders.filter(function(o) { return o.status === 'accepted'; }); break;
+                    case 'cancelled': filtered = orders.filter(function(o) { return o.status === 'cancelled'; }); break;
+                    case 'today': filtered = orders.filter(function(o) { return new Date(o.date).toDateString() === today; }); break;
+                    case 'week': filtered = orders.filter(function(o) { return new Date(o.date) >= weekAgo; }); break;
+                    case 'month': filtered = orders.filter(function(o) { return new Date(o.date) >= monthAgo; }); break;
                     default: filtered = orders;
                 }
             }
-            
-            // Сортировка по дате (сначала новые)
-            return filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            if (searchQuery) {
+                var q = searchQuery.toLowerCase();
+                filtered = filtered.filter(function(o) {
+                    return String(o.id).toLowerCase().indexOf(q) !== -1
+                        || o.name.toLowerCase().indexOf(q) !== -1
+                        || o.phone.indexOf(q) !== -1
+                        || o.items.toLowerCase().indexOf(q) !== -1;
+                });
+            }
+
+            return filtered.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
         }
 
         function renderOrders() {
-            const container = document.getElementById('ordersList');
-            const filtered = getFilteredOrders(currentFilter);
+            var container = document.getElementById('ordersList');
+            var filtered = getFilteredOrders(currentFilter);
             updateStats();
 
             if (filtered.length === 0) {
@@ -641,121 +837,107 @@
                 return;
             }
 
-            container.innerHTML = filtered.map(order => {
-                const statusText = {
-                    processing: 'В обработке',
-                    accepted: 'Принят',
-                    cancelled: 'Отменён'
-                }[order.status] || order.status;
+            container.innerHTML = filtered.map(function(order) {
+                var statusText = { processing: 'В обработке', accepted: 'Принят', cancelled: 'Отменён' }[order.status] || order.status;
+                var statusClass = order.status || 'processing';
 
-                const statusClass = order.status || 'processing';
-                const isCancelled = order.status === 'cancelled';
-
-                return `
-                    <div class="order-card ${order.status === 'processing' ? 'new-order' : ''} ${isCancelled ? 'cancelled' : ''}">
-                        <div class="order-card__top">
-                            <span class="order-card__id">Заказ #${String(order.id).slice(-6)}</span>
-                            <span class="order-card__date">${new Date(order.date).toLocaleString('ru-RU')}</span>
-                        </div>
-                        <div>
-                            <span class="order-card__type">${order.type === 'delivery' ? 'Доставка' : 'С собой'}</span>
-                        </div>
-                        <div class="order-card__customer">${order.name} | ${order.phone}</div>
-                        <div class="order-card__items">${order.items}</div>
-                        <div class="order-card__total">${order.total} ₽</div>
-                        ${order.address ? `<div class="order-card__address">📍 ${order.address}</div>` : ''}
-                        <div class="order-card__bottom">
-                            <span class="order-card__status ${statusClass}">
-                                ${statusText}
-                            </span>
-                            <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                                ${order.status === 'processing' ? `
-                                    <button class="order-card__btn accept" onclick="updateOrder(${order.id}, 'accepted')">
-                                        Принять
-                                    </button>
-                                    <button class="order-card__btn cancel" onclick="updateOrder(${order.id}, 'cancelled')">
-                                        Отменить
-                                    </button>
-                                ` : ''}
-                                ${order.status === 'accepted' ? `
-                                    <button class="order-card__btn cancel" onclick="updateOrder(${order.id}, 'cancelled')">
-                                        Отменить
-                                    </button>
-                                ` : ''}
-                                ${order.status === 'cancelled' ? `
-                                    <button class="order-card__btn restore" onclick="updateOrder(${order.id}, 'processing')">
-                                        Восстановить
-                                    </button>
-                                ` : ''}
-                            </div>
-                        </div>
-                    </div>
-                `;
+                return '<div class="order-card ' + statusClass + '">'
+                    + '<div class="order-card__top">'
+                        + '<span class="order-card__id">Заказ #' + String(order.id).slice(-6) + '</span>'
+                        + '<span class="order-card__date">' + new Date(order.date).toLocaleString('ru-RU') + '</span>'
+                    + '</div>'
+                    + '<div><span class="order-card__type">' + (order.type === 'delivery' ? 'Доставка' : 'С собой') + '</span></div>'
+                    + '<div class="order-card__customer">' + order.name + ' | ' + order.phone + '</div>'
+                    + '<div class="order-card__items">' + order.items + '</div>'
+                    + '<div class="order-card__total">' + order.total + ' \u20BD</div>'
+                    + (order.address ? '<div class="order-card__address">' + order.address + '</div>' : '')
+                    + '<div class="order-card__bottom">'
+                        + '<span class="order-card__status ' + statusClass + '">' + statusText + '</span>'
+                        + '<div class="order-card__actions">'
+                            + (order.status === 'processing' ? '<button class="order-card__btn accept" onclick="updateOrder(' + order.id + ', \'accepted\')">Принять</button><button class="order-card__btn cancel" onclick="updateOrder(' + order.id + ', \'cancelled\')">Отменить</button>' : '')
+                            + (order.status === 'accepted' ? '<button class="order-card__btn cancel" onclick="updateOrder(' + order.id + ', \'cancelled\')">Отменить</button>' : '')
+                            + (order.status === 'cancelled' ? '<button class="order-card__btn restore" onclick="updateOrder(' + order.id + ', \'processing\')">Восстановить</button>' : '')
+                        + '</div>'
+                    + '</div>'
+                + '</div>';
             }).join('');
         }
 
-        // ============================================================
-        //  ЗВУК ДЛЯ АДМИНКИ
-        // ============================================================
-        function playNotificationSound() {
-    try {
-        const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.frequency.value = 880;
-        osc.type = 'sine';
-        gain.gain.setValueAtTime(1.0, audioCtx.currentTime);   // Максимум
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-        osc.start(audioCtx.currentTime);
-        osc.stop(audioCtx.currentTime + 0.3);
-        
-        setTimeout(() => {
-            const osc2 = audioCtx.createOscillator();
-            const gain2 = audioCtx.createGain();
-            osc2.connect(gain2);
-            gain2.connect(audioCtx.destination);
-            osc2.frequency.value = 1100;
-            osc2.type = 'sine';
-            gain2.gain.setValueAtTime(1.0, audioCtx.currentTime);  // Максимум
-            gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-            osc2.start(audioCtx.currentTime);
-            osc2.stop(audioCtx.currentTime + 0.15);
-        }, 150);
-    } catch (e) {}
-}
+        async function updateOrder(orderId, newStatus) {
+            var success = await updateOrderInCloud(orderId, newStatus);
+            if (success) {
+                showToast('Статус заказа #' + String(orderId).slice(-6) + ' изменён');
+                if (newStatus === 'processing') playNotificationSound();
+            } else {
+                showToast('Ошибка обновления заказа');
+            }
+        }
 
         // ============================================================
-        //  ОБРАБОТЧИКИ
+        //  EXPORT
         // ============================================================
-        document.querySelectorAll('.filter-btn').forEach(btn => {
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            var text = 'BURGERHUB — Отчёт по заказам\n';
+            text += 'Дата: ' + new Date().toLocaleString('ru-RU') + '\n';
+            text += 'Всего заказов: ' + orders.length + '\n\n';
+
+            orders.forEach(function(o) {
+                text += 'Заказ #' + String(o.id).slice(-6) + ' | ' + new Date(o.date).toLocaleString('ru-RU') + '\n';
+                text += 'Клиент: ' + o.name + ' | ' + o.phone + '\n';
+                text += 'Тип: ' + (o.type === 'delivery' ? 'Доставка' : 'С собой') + '\n';
+                text += 'Статус: ' + ({ processing: 'В обработке', accepted: 'Принят', cancelled: 'Отменён' }[o.status] || o.status) + '\n';
+                if (o.address) text += 'Адрес: ' + o.address + '\n';
+                text += 'Состав:\n' + o.items + '\n';
+                text += 'Сумма: ' + o.total + ' \u20BD\n';
+                text += '---\n';
+            });
+
+            var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'burgerhub_orders_' + new Date().toISOString().slice(0, 10) + '.txt';
+            a.click();
+            URL.revokeObjectURL(a.href);
+            showToast('Отчёт экспортирован');
+        });
+
+        // ============================================================
+        //  SOUND TOGGLE
+        // ============================================================
+        document.getElementById('soundToggle').addEventListener('click', function() {
+            soundEnabled = !soundEnabled;
+            this.classList.toggle('active', soundEnabled);
+            this.innerHTML = soundEnabled ? '&#x1F50A;' : '&#x1F507;';
+            showToast(soundEnabled ? 'Звук включён' : 'Звук выключен');
+        });
+
+        // ============================================================
+        //  SEARCH
+        // ============================================================
+        document.getElementById('searchInput').addEventListener('input', function() {
+            searchQuery = this.value.trim();
+            renderOrders();
+        });
+
+        // ============================================================
+        //  EVENTS
+        // ============================================================
+        document.querySelectorAll('.filter-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
                 this.classList.add('active');
                 currentFilter = this.dataset.filter;
                 renderOrders();
             });
         });
 
-        async function updateOrder(orderId, newStatus) {
-            const success = await updateOrderInCloud(orderId, newStatus);
-            if (success) {
-                if (newStatus === 'processing') {
-                    playNotificationSound();
-                }
-            }
-        }
-
         document.getElementById('loginBtn').addEventListener('click', function() {
-            const password = document.getElementById('adminPassword').value.trim();
-            if (password === ADMIN_PASSWORD) {
+            var pwd = document.getElementById('adminPassword').value.trim();
+            if (pwd === ADMIN_PASSWORD) {
                 document.getElementById('loginOverlay').classList.add('hidden');
                 document.getElementById('adminPanel').classList.add('open');
                 loadOrders();
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register('/sw.js').catch(() => {});
-                }
+                if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
                 if ('Notification' in window && Notification.permission === 'granted') {
                     document.getElementById('notifBanner').style.display = 'none';
                 }
@@ -773,25 +955,16 @@
 
         document.getElementById('enableNotifBtn').addEventListener('click', function() {
             if ('Notification' in window) {
-                Notification.requestPermission().then(permission => {
+                Notification.requestPermission().then(function(permission) {
                     if (permission === 'granted') {
                         document.getElementById('notifBanner').style.display = 'none';
-                        if ('serviceWorker' in navigator) {
-                            navigator.serviceWorker.ready.then(reg => {
-                                reg.showNotification('Уведомления включены', {
-                                    body: 'Вы будете получать оповещения о новых заказах',
-                                    icon: 'https://placehold.co/192x192/2D4A2E/FFFFFF?text=BH&font=playfair',
-                                    badge: 'https://placehold.co/192x192/2D4A2E/FFFFFF?text=BH&font=playfair',
-                                });
-                            });
-                        }
                     }
                 });
             }
         });
 
         // ============================================================
-        //  ЗАГРУЗКА ЗАКАЗОВ И АВТООБНОВЛЕНИЕ
+        //  LOAD & AUTO-REFRESH
         // ============================================================
         async function loadOrders() {
             orders = await getOrdersFromCloud();
@@ -799,40 +972,37 @@
             return orders;
         }
 
-        let lastOrderCount = 0;
-
         async function checkNewOrders() {
-            const currentOrders = await getOrdersFromCloud();
-            const newProcessing = currentOrders.filter(o => o.status === 'processing').length;
-            const oldProcessing = orders.filter(o => o.status === 'processing').length;
-            
+            var currentOrders = await getOrdersFromCloud();
+            var newProcessing = currentOrders.filter(function(o) { return o.status === 'processing'; }).length;
+            var oldProcessing = orders.filter(function(o) { return o.status === 'processing'; }).length;
+
             if (newProcessing > oldProcessing) {
                 orders = currentOrders;
                 renderOrders();
                 playNotificationSound();
-                
+                showToast('Поступил новый заказ!');
+
                 if ('Notification' in window && Notification.permission === 'granted' && 'serviceWorker' in navigator) {
-                    navigator.serviceWorker.ready.then(reg => {
-                        reg.showNotification('🆕 Новый заказ!', {
+                    navigator.serviceWorker.ready.then(function(reg) {
+                        reg.showNotification('Новый заказ!', {
                             body: 'Поступил новый заказ в BURGERHUB',
-                            icon: 'https://placehold.co/192x192/2D4A2E/FFFFFF?text=BH&font=playfair',
-                            badge: 'https://placehold.co/192x192/2D4A2E/FFFFFF?text=BH&font=playfair',
+                            icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%23D4A24E"/><text x="50" y="68" font-size="50" font-weight="800" text-anchor="middle" fill="%230C0C0E">BH</text></svg>',
+                            badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%23D4A24E"/><text x="50" y="68" font-size="50" font-weight="800" text-anchor="middle" fill="%230C0C0E">BH</text></svg>',
                             vibrate: [200, 100, 200],
                             tag: 'new-order',
                             renotify: true,
-                            requireInteraction: true,
-                            data: { url: '/admin.html' }
+                            requireInteraction: true
                         });
                     });
                 }
             }
-            lastOrderCount = orders.length;
         }
 
         setInterval(checkNewOrders, 3000);
 
         // ============================================================
-        //  АВТОВХОД
+        //  AUTO-LOGIN
         // ============================================================
         (function() {
             try {
@@ -840,9 +1010,7 @@
                     document.getElementById('loginOverlay').classList.add('hidden');
                     document.getElementById('adminPanel').classList.add('open');
                     loadOrders();
-                    if ('serviceWorker' in navigator) {
-                        navigator.serviceWorker.register('/sw.js').catch(() => {});
-                    }
+                    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
                     if ('Notification' in window && Notification.permission === 'granted') {
                         document.getElementById('notifBanner').style.display = 'none';
                     }
@@ -850,8 +1018,8 @@
             } catch(e) {}
         })();
 
-        console.log('BURGERHUB Админ-панель загружена');
-        console.log('Пароль: Burger_hub1@');
+        console.log('BURGERHUB Admin Panel loaded');
+        console.log('Password: Burger_hub1@');
     </script>
 </body>
 </html>
