@@ -551,16 +551,16 @@
         }
 
         /* ===== RESPONSIVE ===== */
-        @media (max-width: 700px) {
+        @media (max-width: 800px) {
             .stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
             .stat-card__number { font-size: 22px; }
             .admin-header { flex-direction: column; align-items: flex-start; }
             .admin-header__actions { width: 100%; justify-content: flex-end; }
             .toolbar { flex-direction: column; align-items: stretch; }
-            .filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+            .filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; min-width: 0; }
             .filter-btn { flex-shrink: 0; }
-            .toolbar__right { justify-content: flex-end; }
-            .search-input { width: 140px; }
+            .toolbar__right { width: 100%; justify-content: flex-start; }
+            .search-input { flex: 1; min-width: 0; max-width: 260px; }
             .order-card { padding: 14px 14px; }
             .admin-panel { padding: 16px 12px 30px; }
         }
@@ -574,7 +574,7 @@
             .order-card__customer { font-size: 13px; }
             .order-card__total { font-size: 14px; }
             .filter-btn { font-size: 10px; padding: 5px 12px; min-height: 32px; }
-            .search-input { width: 120px; font-size: 11px; }
+            .search-input { width: 120px; font-size: 11px; max-width: 160px; }
             .admin-header__btn { font-size: 11px; padding: 6px 14px; min-height: 36px; }
         }
     </style>
