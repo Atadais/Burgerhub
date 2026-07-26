@@ -312,6 +312,7 @@
             display: flex;
             gap: 6px;
             align-items: center;
+            min-width: 0;
         }
         .search-input {
             padding: 8px 14px;
@@ -557,10 +558,10 @@
             .admin-header { flex-direction: column; align-items: flex-start; }
             .admin-header__actions { width: 100%; justify-content: flex-end; }
             .toolbar { flex-direction: column; align-items: stretch; gap: 6px; }
-            .toolbar__right { width: 100%; justify-content: flex-start; order: -1; margin-bottom: 2px; }
-            .search-input { flex: 1; min-width: 0; max-width: none; }
-            .filters { flex-wrap: wrap; gap: 4px; min-width: 0; }
-            .filter-btn { flex-shrink: 0; padding: 5px 12px; font-size: 10px; }
+            .toolbar__right { width: 100%; order: -1; margin-bottom: 6px; }
+            .search-input { width: 100%; }
+            .filters { flex-wrap: wrap; gap: 4px; }
+            .filter-btn { padding: 5px 12px; font-size: 10px; }
             .order-card { padding: 14px 14px; }
             .admin-panel { padding: 16px 12px 30px; }
         }
@@ -665,8 +666,8 @@
                 <button class="filter-btn" data-filter="all">Все</button>
             </div>
             <div class="toolbar__right">
-                <input class="search-input" id="searchInput" placeholder="Поиск по номеру, имени, телефону">
-                <button class="toolbar__icon-btn" id="soundToggle" title="Звук уведомлений">&#x1F50A;</button>
+                <input class="search-input" id="searchInput" placeholder="Поиск по номеру, имени">
+                
             </div>
         </div>
 
@@ -686,7 +687,7 @@
 
         let orders = [];
         let currentFilter = 'processing';
-        let soundEnabled = true;
+
         let searchQuery = '';
 
         // ============================================================
@@ -743,7 +744,6 @@
         //  SOUND
         // ============================================================
         function playNotificationSound() {
-            if (!soundEnabled) return;
             try {
                 var ctx = new (window.AudioContext || window.webkitAudioContext)();
                 function beep(freq, dur, delay) {
@@ -904,12 +904,6 @@
         // ============================================================
         //  SOUND TOGGLE
         // ============================================================
-        document.getElementById('soundToggle').addEventListener('click', function() {
-            soundEnabled = !soundEnabled;
-            this.classList.toggle('active', soundEnabled);
-            this.innerHTML = soundEnabled ? '&#x1F50A;' : '&#x1F507;';
-            showToast(soundEnabled ? 'Звук включён' : 'Звук выключен');
-        });
 
         // ============================================================
         //  SEARCH
