@@ -308,12 +308,6 @@
         }
         .filter-btn:active { transform: scale(0.95); }
 
-        .toolbar__right {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            min-width: 0;
-        }
         .search-input {
             padding: 8px 14px;
             border-radius: var(--radius-full);
@@ -321,10 +315,11 @@
             border: 1px solid var(--border);
             color: var(--text-primary);
             font-size: 12px;
-            width: 160px;
+            width: 200px;
             transition: var(--transition);
             outline: none;
             min-height: 36px;
+            flex-shrink: 0;
         }
         .search-input:focus { border-color: var(--border-accent); }
         .search-input::placeholder { color: var(--text-tertiary); }
@@ -557,11 +552,10 @@
             .stat-card__number { font-size: 22px; }
             .admin-header { flex-direction: column; align-items: flex-start; }
             .admin-header__actions { width: 100%; justify-content: flex-end; }
-            .toolbar { flex-direction: column; align-items: stretch; gap: 6px; }
-            .toolbar__right { width: 100%; order: -1; margin-bottom: 6px; }
-            .search-input { width: 100%; }
-            .filters { flex-wrap: wrap; gap: 4px; }
+            .toolbar { align-items: stretch; }
+            .filters { gap: 4px; align-items: center; }
             .filter-btn { padding: 5px 12px; font-size: 10px; }
+            .search-input { width: 180px; flex-shrink: 0; }
             .order-card { padding: 14px 14px; }
             .admin-panel { padding: 16px 12px 30px; }
         }
@@ -575,7 +569,7 @@
             .order-card__customer { font-size: 13px; }
             .order-card__total { font-size: 14px; }
             .filter-btn { font-size: 10px; padding: 5px 12px; min-height: 32px; }
-            .search-input { width: 120px; font-size: 11px; max-width: 160px; }
+            .search-input { width: 160px; font-size: 11px; }
             .admin-header__btn { font-size: 11px; padding: 6px 14px; min-height: 36px; }
         }
     </style>
@@ -661,13 +655,10 @@
                 <button class="filter-btn" data-filter="accepted">Принятые</button>
                 <button class="filter-btn" data-filter="cancelled">Отменённые</button>
                 <button class="filter-btn" data-filter="today">Сегодня</button>
+                <button class="filter-btn" data-filter="all">Все</button>
                 <button class="filter-btn" data-filter="week">Неделя</button>
                 <button class="filter-btn" data-filter="month">Месяц</button>
-                <button class="filter-btn" data-filter="all">Все</button>
-            </div>
-            <div class="toolbar__right">
                 <input class="search-input" id="searchInput" placeholder="Поиск по номеру, имени">
-                
             </div>
         </div>
 
