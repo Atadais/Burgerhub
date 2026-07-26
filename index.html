@@ -1014,9 +1014,8 @@
             background: #fff;
         }
         .cart-modal__form textarea {
-            resize: none;
-            overflow-y: hidden;
-            min-height: 70px;
+            resize: vertical;
+            min-height: 30px;
             font-size: 11px;
         }
 
@@ -1025,8 +1024,9 @@
             margin-bottom: 8px;
         }
         .cart-modal__form .delivery-field:last-of-type {
-            margin-bottom: 0;
+            margin-bottom: 8px;
         }
+        .cart-modal__form #orderComment{margin-bottom:0;resize:none;min-height:70px;overflow-y:hidden;}
 
         .cafe-info {
             background: var(--bg);
@@ -2409,4 +2409,3 @@
     </script>
 </body>
 </html>
-
