@@ -990,7 +990,7 @@
         .cart-modal__form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 6px;
         }
 
         .cart-modal__form input,
@@ -1019,11 +1019,12 @@
             font-size: 11px;
         }
 
-        /* Убираем лишние отступы у полей в доставке, так как gap уже даёт отступы */
-        #deliveryFields input,
-        #deliveryFields textarea {
+        /* Увеличенные отступы между полями в доставке */
+        .cart-modal__form .delivery-field {
+            margin-bottom: 8px;
+        }
+        .cart-modal__form .delivery-field:last-of-type {
             margin-bottom: 0;
-            width: 100%;
         }
 
         .cafe-info {
@@ -1363,7 +1364,7 @@
             .cart-modal__title { font-size: 15px; }
             .cart-modal__total { font-size: 15px; margin-bottom: 6px; }
             .order-type__btn { padding: 5px 0; font-size: 11px; }
-            .cart-modal__form { gap: 8px; }
+            .cart-modal__form { gap: 4px; }
             .cart-modal__form input,
             .cart-modal__form textarea { padding: 6px 10px; font-size: 11px; }
             .cart-modal__form textarea { min-height: 26px; font-size: 10px; }
@@ -1580,11 +1581,11 @@
                     <input type="tel" id="orderPhone" placeholder="Номер телефона" required>
 
                     <div id="deliveryFields">
-                        <input type="text" id="orderStreet" placeholder="Улица, дом">
-                        <input type="text" id="orderApartment" placeholder="Кв./Офис">
-                        <input type="text" id="orderFloor" placeholder="Этаж">
-                        <input type="text" id="orderEntrance" placeholder="Подъезд">
-                        <textarea id="orderComment" placeholder="Комментарий к адресу" rows="2"></textarea>
+                        <input type="text" id="orderStreet" placeholder="Улица, дом" class="delivery-field">
+                        <input type="text" id="orderApartment" placeholder="Кв./Офис" class="delivery-field">
+                        <input type="text" id="orderFloor" placeholder="Этаж" class="delivery-field">
+                        <input type="text" id="orderEntrance" placeholder="Подъезд" class="delivery-field">
+                        <textarea id="orderComment" placeholder="Комментарий к адресу" rows="2" class="delivery-field"></textarea>
                     </div>
 
                     <!-- ===== С СОБОЙ (С КАРТОЙ) ===== -->
